@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Repositories\Interfaces\ReservationRepositoryInterface;
+use App\Repositories\Interfaces\ResourceRepositoryInterface;
+use App\Repositories\ResourceRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +14,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(ResourceRepositoryInterface::class, ResourceRepository::class);
+        // $this->app->bind(ReservationRepositoryInterface::class, ReservationRepository::class);
     }
 
     /**

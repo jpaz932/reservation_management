@@ -7,6 +7,6 @@ interface ReservationRepositoryInterface
     public function getAll();
     public function findById(int $id);
     public function create(array $data);
-    public function checkAvailability(int $resourceId, string $reservedAt, int $duration): bool;
-    public function cancel(Reservation $reservation);
+    public function cancel(int $id);
+    public function update(array $data, int $id);
 }

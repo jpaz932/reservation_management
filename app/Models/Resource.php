@@ -17,6 +17,11 @@ class Resource extends Model
         'is_active'
     ];
 
+    public const TYPES = [
+        'MEETING_ROOM' => 'meeting_room',
+        'EQUIPMENT' => 'equipment',
+    ];
+
     public function reservations()
     {
         return $this->hasMany(Reservation::class);

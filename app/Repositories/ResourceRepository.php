@@ -47,7 +47,7 @@ class ResourceRepository implements ResourceRepositoryInterface
         return $resource;
     }
 
-    public function checkAvailability($resourceId, $reservedAt, $duration) 
+    public function checkAvailability($resourceId, $reservedAt, $duration, $reservationId = null) 
     {
         $resource = $this->findById($resourceId);
         if (!$resource->is_active) {
@@ -60,6 +60,7 @@ class ResourceRepository implements ResourceRepositoryInterface
         $conflictingReservations = $resource->reservations()
             ->where('status', '!=', 'cancelled')
             ->whereRaw('reserved_at <= ? AND DATE_ADD(reserved_at, INTERVAL duration MINUTE) >= ?', [$endTime, $startTime])
+            ->where('id', '!=', $reservationId)
             ->exists();
 
         return !$conflictingReservations;

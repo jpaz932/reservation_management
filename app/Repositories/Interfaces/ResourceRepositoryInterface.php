@@ -9,5 +9,5 @@ interface ResourceRepositoryInterface
     public function create(array $data);
     public function update(array $data, int $id);
     public function delete(int $id);
-    public function checkAvailability(int $resourceId, string $reservedAt, int $duration);
+    public function checkAvailability(int $resourceId, string $reservedAt, int $duration, int $reservationId = null);
 }

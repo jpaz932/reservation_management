@@ -33,7 +33,7 @@ class ReservationController extends Controller
             $reservation = $this->reservationFactory->create($request->validated());
             return response()->json($reservation, 201);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 400);
+            return response()->json(['message' => $e->getMessage()], $e->getCode() ?? 400);
         }
     }
 
@@ -53,6 +53,9 @@ class ReservationController extends Controller
             $reservation = $this->reservationRepository->update($request->validated(), $id);
             return response()->json($reservation);
         } catch (\Exception $e) {
+            if ($e->getCode() === 409) {
+                return response()->json(['message' => $e->getMessage()], 409);
+            }
             return response()->json(['message' => 'Reservation not found'], 404);
         }
     }

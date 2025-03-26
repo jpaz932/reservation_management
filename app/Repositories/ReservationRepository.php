@@ -4,14 +4,19 @@ namespace App\Repositories;
 
 use App\Models\Reservation;
 use App\Repositories\Interfaces\ReservationRepositoryInterface;
+use App\Repositories\Interfaces\ResourceRepositoryInterface;
 
 class ReservationRepository implements ReservationRepositoryInterface
 {
     protected $reservation;
+    protected $resourceRepository;
 
-    public function __construct(Reservation $reservation) 
-    {
+    public function __construct(
+        Reservation $reservation, 
+        ResourceRepositoryInterface $resourceRepository
+    ) {
         $this->reservation = $reservation;
+        $this->resourceRepository = $resourceRepository;
     }
 
     public function getAll()
@@ -35,6 +40,18 @@ class ReservationRepository implements ReservationRepositoryInterface
     public function update(array $data, int $id)
     {
         $reservation = $this->reservation->findOrFail($id);
+
+        if (
+            !$this->resourceRepository->checkAvailability(
+                $data['resource_id'],
+                $data['reserved_at'],
+                $data['duration'],
+                $id
+            )
+        ) {
+            throw new \Exception('The resource is not available on the selected date  time.', 409);
+        }
+
         $reservation->update($data);
         return $reservation;
     }

@@ -4,6 +4,30 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
+/**
+ * @OA\Schema(
+ *     schema="CheckAvailabilityRequest",
+ *     type="object",
+ *     title="Check Availability Request",
+ *     description="Solicitud para verificar la disponibilidad de una reserva",
+ *     required={"reserved_at", "duration"},
+ *     @OA\Property(
+ *         property="reserved_at",
+ *         type="string",
+ *         format="date-time",
+ *         description="Fecha y hora de la reserva en el formato d-m-Y H:i",
+ *         example="25-12-2023 14:30"
+ *     ),
+ *     @OA\Property(
+ *         property="duration",
+ *         type="integer",
+ *         format="int32",
+ *         description="Duración de la reserva en minutos, debe ser al menos 1",
+ *         example=20
+ *     )
+ * )
+ */
 class CheckAvailabilityRequest extends FormRequest
 {
     /**

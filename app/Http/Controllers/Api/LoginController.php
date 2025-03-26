@@ -9,12 +9,41 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @OA\Tag(
+ *   name="Auth",
+ *   description="Endpoints de autentucación",
+ * )
+ */
 class LoginController extends Controller
 {
     /**
-     * Authenticates a user with email and password and returns an access token and user information.
-     * @param \App\Http\Requests\Api\Auth\LoginRequest $request
-     * @return mixed|\Illuminate\Http\JsonResponse
+     * @OA\Post(
+     *     path="/api/login",
+     *     summary="Autenicar usuario y obtener token de acceso",
+     *     tags={"Authentication"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/LoginRequest"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Autenticación exitosa",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="user", type="object", ref="#/components/schemas/User"),
+     *             @OA\Property(property="token", type="string", example="1|abc123def456ghi789")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="email", type="array", @OA\Items(type="string", example="The provided credentials are incorrect."))
+     *         )
+     *     )
+     * )
      */
     public function login(LoginRequest $request)
     {
@@ -37,9 +66,19 @@ class LoginController extends Controller
     }
 
     /**
-     * Revokes the current user's access token.
-     * @param \Illuminate\Http\Request $request
-     * @return mixed|\Illuminate\Http\JsonResponse
+     * @OA\Post(
+     *     path="/api/logout",
+     *     summary="Cerrar sesión y revocar token de acceso",
+     *     tags={"Authentication"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Sesión cerrada exitosamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="success")
+     *         )
+     *     )
+     * )
      */
     public function logout(Request $request)
     {

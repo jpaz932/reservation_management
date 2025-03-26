@@ -1,0 +1,1034 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Documentación de la API",
+        "description": "Documentación de la API de la aplicación",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Autenicar usuario y obtener token de acceso",
+                "operationId": "f74109d26aab35daab2d8c617c97c3fa",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Autenticación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|abc123def456ghi789"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "email": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "example": "The provided credentials are incorrect."
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Cerrar sesión y revocar token de acceso",
+                "operationId": "8f9216a1ffa35b50dda879998d4b9213",
+                "responses": {
+                    "200": {
+                        "description": "Sesión cerrada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/reservations": {
+            "get": {
+                "tags": [
+                    "Reservations"
+                ],
+                "summary": "Obtener todas las reservas",
+                "operationId": "f10e68ff0ce263ef754b2f640eda8d93",
+                "responses": {
+                    "200": {
+                        "description": "Lista de reservas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Reservation"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Reservations"
+                ],
+                "summary": "Crear una reserva",
+                "operationId": "4f59911f11563f79b4f01bd02222607d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateReservationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Reserva creada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reservation"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error de conflicto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/reservations/{id}": {
+            "get": {
+                "tags": [
+                    "Reservations"
+                ],
+                "summary": "Obtener una reserva",
+                "operationId": "14c077250033bb10a7305f9724f10bd4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la reserva",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reserva encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reservation"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Reserva no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Reservations"
+                ],
+                "summary": "Cancelar una reserva",
+                "operationId": "3f3a1d6e7ffee88b7ef58128a7f9295c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la reserva",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reserva cancelada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reservation"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Reserva no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Reservations"
+                ],
+                "summary": "Actualizar una reserva",
+                "operationId": "7b80201e204732d789095d85fe3bc71d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la reserva",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateReservationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Reserva actualizada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reservation"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error de conflicto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Reserva no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/resources": {
+            "get": {
+                "tags": [
+                    "Resources"
+                ],
+                "summary": "Obtener todos los recursos",
+                "operationId": "7633cd726de24dafbff1c0559ade67e2",
+                "responses": {
+                    "200": {
+                        "description": "Lista de recursos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Resource"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Resources"
+                ],
+                "summary": "Crear un recurso",
+                "operationId": "ae1560ca6061943b6da1b27ed6e18059",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateResourceRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Recurso creado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Resource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/resources/{id}": {
+            "get": {
+                "tags": [
+                    "Resources"
+                ],
+                "summary": "Obtener un recurso",
+                "operationId": "1c48e8d46ffeee459fdeccd77f879645",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del recurso",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recurso encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Resource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recurso no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Resources"
+                ],
+                "summary": "Desactivar un recurso",
+                "operationId": "edabc99f680998ad2bda300c06eb0bab",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del recurso",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recurso desactivado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Resource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recurso no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Resources"
+                ],
+                "summary": "Actualizar un recurso",
+                "operationId": "7d700fbab5332312822c1c7771517c69",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del recurso",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateResourceRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Recurso actualizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Resource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recurso no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/resources/{id}/availability": {
+            "post": {
+                "tags": [
+                    "Resources"
+                ],
+                "summary": "Verificar disponibilidad de un recurso",
+                "operationId": "8da5f6a2199bb38f9792e1e9a940201d",
+                "parameters": [
+                    {
+                        "name": "resourceId",
+                        "in": "path",
+                        "description": "ID del recurso",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CheckAvailabilityRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Recurso disponible",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "available": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Recurso no disponible",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "available": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recurso no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "LoginRequest": {
+                "title": "Login Request",
+                "description": "Request body para autenticar un usuario",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "Email del usuario",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "description": "Contraseña del usuario",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "CheckAvailabilityRequest": {
+                "title": "Check Availability Request",
+                "description": "Solicitud para verificar la disponibilidad de una reserva",
+                "required": [
+                    "reserved_at",
+                    "duration"
+                ],
+                "properties": {
+                    "reserved_at": {
+                        "description": "Fecha y hora de la reserva en el formato d-m-Y H:i",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "25-12-2023 14:30"
+                    },
+                    "duration": {
+                        "description": "Duración de la reserva en minutos, debe ser al menos 1",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 20
+                    }
+                },
+                "type": "object"
+            },
+            "CreateReservationRequest": {
+                "title": "Create Reservation Request",
+                "description": "Esquema de validación para crear una reserva",
+                "required": [
+                    "resource_id",
+                    "reserved_at",
+                    "duration"
+                ],
+                "properties": {
+                    "resource_id": {
+                        "description": "ID del recurso a reservar",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "reserved_at": {
+                        "description": "Fecha y hora de la reserva en el formato d-m-Y H:i",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "25-12-2023 14:30"
+                    },
+                    "duration": {
+                        "description": "Duración de la reserva en minutos, debe ser al menos 1",
+                        "type": "integer",
+                        "example": 20
+                    }
+                },
+                "type": "object"
+            },
+            "CreateResourceRequest": {
+                "title": "Create Resource Request",
+                "description": "Esquema de validación para la creación de un recurso",
+                "required": [
+                    "name",
+                    "type"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Nombre del recurso",
+                        "type": "string",
+                        "example": "Sala de reuniones A"
+                    },
+                    "type": {
+                        "description": "Tipo de recurso. Valores permitidos: meeting_room, equipment",
+                        "type": "string",
+                        "enum": [
+                            "meeting_room",
+                            "equipment"
+                        ],
+                        "example": "meeting_room"
+                    },
+                    "description": {
+                        "description": "Descripción del recurso (opcional)",
+                        "type": "string",
+                        "example": "Una sala de reuniones equipada con proyector"
+                    },
+                    "capacity": {
+                        "description": "Capacidad del recurso (opcional)",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "is_active": {
+                        "description": "Estado del recurso, si está activo o no (opcional)",
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateReservationRequest": {
+                "title": "UpdateReservationRequest",
+                "description": "Esquema de validación para actualizar una reserva",
+                "required": [
+                    "status",
+                    "resource_id",
+                    "reserved_at",
+                    "duration"
+                ],
+                "properties": {
+                    "status": {
+                        "description": "Estado de la reserva. Solo se permite el valor 'confirmed'.",
+                        "type": "string",
+                        "enum": [
+                            "confirmed"
+                        ]
+                    },
+                    "resource_id": {
+                        "description": "ID del recurso asociado a la reserva. Debe existir en la tabla 'resources'.",
+                        "type": "integer"
+                    },
+                    "reserved_at": {
+                        "description": "Fecha y hora de la reserva en el formato 'd-m-Y H:i'.",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "duration": {
+                        "description": "Duración de la reserva en minutos. Debe ser al menos 1.",
+                        "type": "integer",
+                        "minimum": 1
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateResourceRequest": {
+                "title": "Update Resource Request",
+                "description": "Esquema de validación para actualizar un recurso",
+                "properties": {
+                    "name": {
+                        "description": "Nombre del recurso",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Sala de reuniones A"
+                    },
+                    "type": {
+                        "description": "Tipo de recurso",
+                        "type": "string",
+                        "enum": [
+                            "meeting_room",
+                            "equipment"
+                        ],
+                        "example": "meeting_room"
+                    },
+                    "description": {
+                        "description": "Descripción del recurso",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Una sala equipada con proyector y pizarra",
+                        "nullable": true
+                    },
+                    "capacity": {
+                        "description": "Capacidad del recurso",
+                        "type": "integer",
+                        "example": 10,
+                        "nullable": true
+                    },
+                    "is_active": {
+                        "description": "Estado de activación del recurso",
+                        "type": "boolean",
+                        "example": true,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reservation": {
+                "title": "Reservación",
+                "description": "Modelo de reservación",
+                "required": [
+                    "resource_id",
+                    "user_id",
+                    "reserved_at",
+                    "duration",
+                    "status"
+                ],
+                "properties": {
+                    "resource_id": {
+                        "description": "ID del recurso reservado",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "description": "ID del usuario que hizo la reserva",
+                        "type": "integer"
+                    },
+                    "reserved_at": {
+                        "description": "Fecha y hora de la reserva",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "duration": {
+                        "description": "Duración de la reserva en minutos",
+                        "type": "integer"
+                    },
+                    "status": {
+                        "description": "Estado de la reserva",
+                        "type": "string",
+                        "enum": [
+                            "confirmed",
+                            "pending",
+                            "cancelled"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "Resource": {
+                "title": "Recurso",
+                "description": "Modelo que representa un recurso en el sistema de gestión de reservas.",
+                "properties": {
+                    "id": {
+                        "description": "ID único del recurso",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "Nombre del recurso",
+                        "type": "string",
+                        "example": "Sala de reuniones A"
+                    },
+                    "type": {
+                        "description": "Tipo de recurso (por ejemplo, sala de reuniones o equipo)",
+                        "type": "string",
+                        "enum": [
+                            "meeting_room",
+                            "equipment"
+                        ],
+                        "example": "meeting_room"
+                    },
+                    "description": {
+                        "description": "Descripción del recurso",
+                        "type": "string",
+                        "example": "Sala equipada con proyector y capacidad para 10 personas"
+                    },
+                    "capacity": {
+                        "description": "Capacidad máxima del recurso",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "is_active": {
+                        "description": "Indica si el recurso está activo",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "description": "Fecha y hora de creación del recurso",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "description": "Fecha y hora de la última actualización del recurso",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-02T15:30:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User",
+                "description": "Modelo de usuario",
+                "properties": {
+                    "id": {
+                        "description": "ID del usuario",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Nombre del usuario",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Email del usuario",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "email_verified_at": {
+                        "description": "Fecha de verificación del email",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación del usuario",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de actualización del usuario",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "Authorization",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Reservations",
+            "description": "Endpoints de reservas"
+        },
+        {
+            "name": "Resources",
+            "description": "Endpoints de recursos"
+        },
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        }
+    ]
+}

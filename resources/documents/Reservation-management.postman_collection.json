@@ -318,9 +318,6 @@
 		},
 		{
 			"name": "RESOURCES - checkAbailability",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -332,7 +329,7 @@
 						}
 					]
 				},
-				"method": "GET",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Accept",

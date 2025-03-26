@@ -5,5 +5,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('resources', ResourceController::class);
-    Route::get('resources/{id}/availability', [ResourceController::class, 'checkAvailability']);
+    Route::post('resources/{id}/availability', [ResourceController::class, 'checkAvailability']);
 });

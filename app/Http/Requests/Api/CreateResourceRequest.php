@@ -4,6 +4,47 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
+/**
+ * @OA\Schema(
+ *     schema="CreateResourceRequest",
+ *     type="object",
+ *     title="Create Resource Request",
+ *     description="Esquema de validación para la creación de un recurso",
+ *     required={"name", "type"},
+ *     @OA\Property(
+ *         property="name",
+ *         type="string",
+ *         description="Nombre del recurso",
+ *         example="Sala de reuniones A"
+ *     ),
+ *     @OA\Property(
+ *         property="type",
+ *         type="string",
+ *         description="Tipo de recurso. Valores permitidos: meeting_room, equipment",
+ *         enum={"meeting_room", "equipment"},
+ *         example="meeting_room"
+ *     ),
+ *     @OA\Property(
+ *         property="description",
+ *         type="string",
+ *         description="Descripción del recurso (opcional)",
+ *         example="Una sala de reuniones equipada con proyector"
+ *     ),
+ *     @OA\Property(
+ *         property="capacity",
+ *         type="integer",
+ *         description="Capacidad del recurso (opcional)",
+ *         example=10
+ *     ),
+ *     @OA\Property(
+ *         property="is_active",
+ *         type="boolean",
+ *         description="Estado del recurso, si está activo o no (opcional)",
+ *         example=true
+ *     )
+ * )
+ */
 class CreateResourceRequest extends FormRequest
 {
     /**

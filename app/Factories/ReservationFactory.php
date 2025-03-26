@@ -41,7 +41,7 @@ class ReservationFactory
                 $duration
             )
         ) {
-            throw new \Exception('The resource is not available on the selected date  time.', 409);
+            throw new \Exception('The resource is not available on the selected date time.', 409);
         }
 
         $resource = $this->resourceRepository->findById($resourceId);

@@ -2,9 +2,12 @@
 
 Este proyecto implementa una API REST en Laravel para gestionar la reserva de recursos compartidos como salas de reuniones o equipos de oficina.
 
+> [!NOTE]  
+> Información.
+
 ## Estructura y Diseño del Sistema
 
-El sistema está construido siguiendo una arquitectura de capas con los siguientes componentes:
+El sistema está construido siguiendo una arquitectura de capas con los siguientes componentes y patrones:
 
 ### Modelos
 - `Resource`: Representa los recursos disponibles para reservar (salas, equipos)
@@ -45,7 +48,8 @@ La validación de disponibilidad se implementó en el `ResourceRepository` para:
 
 ## Seguridad
 Se implementó autenticación básica por medio de tokens con la libreria sanctum, los endpoints se encuentran protegidos por medio del middleware `auth:sanctum`
-- El usuario de prueba se encuentra en las semillas, por lo que debe ejecutar las semillas
+> [!NOTE]  
+> El usuario de prueba se encuentra en las semillas, por lo que debe ejecutar las semillas.
 
 Usuario de prueba:
 ```
@@ -95,14 +99,14 @@ php artisan key:generate
 php artisan migrate
 ```
 
-7. Ejecutar las semillas para algunos datos de pruebas.
-```bash
-php artisan db:seed
-```
-
-8. Para iniciar el servidor en desarrollo ejecutar
+7. Para iniciar el servidor en desarrollo ejecutar
 ```bash
 php artisan serve
+```
+
+8. Ejecutar las semillas para crear el usuario de prueba.
+```bash
+php artisan db:seed
 ```
 
 ## Pruebas
@@ -111,6 +115,8 @@ php artisan serve
 php artisan test
 ```
 
-## Documentación adicional
+## Anexos
+> [!TIP]
+> Documentación adicional.
 - En la carpeta del proyecto `/resources/documents/` se encuentra un archivo con la colección de postman que le servirá de ejemplo y guia para los endpoints.
 - En la ruta `/api/documentation` se encuentra la documentación de los endpoints en `Swagger` para mayor claridad.

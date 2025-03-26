@@ -93,7 +93,7 @@ class ResourceController extends Controller
                 $data['reserved_at'],
                 $data['duration']
             );
-            return response()->json(['available' => $isAvailable]);
+            return response()->json(['available' => $isAvailable], $isAvailable ? 200 : 400);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Resource not found'], 404);
         }

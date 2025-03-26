@@ -9,6 +9,7 @@ use Carbon\Carbon;
 class ResourceRepository implements ResourceRepositoryInterface
 {
     protected $resource;
+
     public function __construct(Resource $resource)
     {
         $this->resource = $resource;
@@ -39,7 +40,7 @@ class ResourceRepository implements ResourceRepositoryInterface
         return $resource;
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
         $resource = $this->findById($id);
         $resource->update(['is_active' => false]);
@@ -58,7 +59,7 @@ class ResourceRepository implements ResourceRepositoryInterface
 
         $conflictingReservations = $resource->reservations()
             ->where('status', '!=', 'cancelled')
-            ->whereRaw('reserved_at <= ? AND DATE_ADD(reserved_at, INTERVAL duration MINUTE) > ?', [$endTime, $startTime])
+            ->whereRaw('reserved_at <= ? AND DATE_ADD(reserved_at, INTERVAL duration MINUTE) >= ?', [$endTime, $startTime])
             ->exists();
 
         return !$conflictingReservations;

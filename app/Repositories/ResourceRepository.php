@@ -15,11 +15,21 @@ class ResourceRepository implements ResourceRepositoryInterface
         $this->resource = $resource;
     }
 
+    /**
+     * Get all resources
+     * @return \Illuminate\Database\Eloquent\Collection<int, Resource>
+     */
     public function getAll()
     {
         return $this->resource::where('is_active', true)->get();
     }
 
+    /**
+     * Find a resource by id
+     * @param int $id
+     * @return Resource
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
     public function findById(int $id)
     {
         return $this->resource->where([
@@ -28,11 +38,23 @@ class ResourceRepository implements ResourceRepositoryInterface
         ])->firstOrFail();
     }
 
+    /**
+     * Create a new resource
+     * @param array $data
+     * @return Resource
+     */
     public function create(array $data)
     {
         return $this->resource->create($data);
     }
 
+    /**
+     * Summary of update
+     * @param array $data
+     * @param int $id
+     * @return Resource
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
     public function update(array $data, int $id)
     {
         $resource = $this->resource->findOrFail($id);
@@ -40,6 +62,12 @@ class ResourceRepository implements ResourceRepositoryInterface
         return $resource;
     }
 
+    /**
+     * Inactivate a resource
+     * @param int $id
+     * @return Resource
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
     public function delete(int $id)
     {
         $resource = $this->findById($id);
@@ -47,7 +75,15 @@ class ResourceRepository implements ResourceRepositoryInterface
         return $resource;
     }
 
-    public function checkAvailability($resourceId, $reservedAt, $duration, $reservationId = null) 
+    /**
+     * Check if a resource is available for reservation
+     * @param int $resourceId
+     * @param string $reservedAt
+     * @param int $duration
+     * @param int|null $reservationId
+     * @return bool
+     */
+    public function checkAvailability(int $resourceId, string $reservedAt, int $duration, int | null $reservationId = null) 
     {
         $resource = $this->findById($resourceId);
         if (!$resource->is_active) {

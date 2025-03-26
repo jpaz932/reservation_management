@@ -21,6 +21,13 @@ class ReservationFactory
         $this->resourceRepository = $resourceRepository;
     }
 
+    /**
+     * Create a new type of reservation
+     * @param array $data
+     * @return \App\Models\Reservation
+     * @throws \Exception if the resource is not available on the selected date time
+     * @throws \InvalidArgumentException
+     */
     public function create(array $data)
     {
         $reservedAt = $data['reserved_at'];
@@ -45,29 +52,53 @@ class ReservationFactory
             case Resource::TYPES['EQUIPMENT']:
                 return $this->createEquipmentReservation($resource, $reservedAt, $duration);
             default:
-                throw new InvalidArgumentException('Unsupported resource type: ' . $resource->type);
+                throw new InvalidArgumentException('Unsupported resource type: ' . $resource->type, 400);
         }
     }
 
-    private function createMeetingRoomReservation(Resource $resource, $reservedAt, $duration)
+    /**
+     * Create a meeting room reservation
+     * @param \App\Models\Resource $resource
+     * @param string $reservedAt
+     * @param int $duration
+     * @throws \InvalidArgumentException
+     * @return \App\Models\Reservation
+     */
+    private function createMeetingRoomReservation(Resource $resource, string $reservedAt, int $duration)
     {
         if ($duration > 240) {
-            throw new InvalidArgumentException('Meeting rooms cannot be booked for more than 4 hours.');
+            throw new InvalidArgumentException('Meeting rooms cannot be booked for more than 4 hours.', 400);
         }
 
         return $this->createReservation($resource, $reservedAt, $duration);
     }
 
-    private function createEquipmentReservation(Resource $resource, $reservedAt, $duration)
+    /**
+     * Create an equipment reservation
+     * @param \App\Models\Resource $resource
+     * @param string $reservedAt
+     * @param int $duration
+     * @throws \InvalidArgumentException
+     * @return \App\Models\Reservation
+     */
+    private function createEquipmentReservation(Resource $resource, string $reservedAt, int $duration)
     {
         if ($duration > 480) {
-            throw new InvalidArgumentException('Equipment cannot be reserved for more than 8 hours.');
+            throw new InvalidArgumentException('Equipment cannot be reserved for more than 8 hours.', 400);
         }
 
         return $this->createReservation($resource, $reservedAt, $duration);
     }
 
-    private function createReservation(Resource $resource, $reservedAt, $duration, $status = null)
+    /**
+     * Create a reservation
+     * @param \App\Models\Resource $resource
+     * @param string $reservedAt
+     * @param int $duration
+     * @param string $status
+     * @return \App\Models\Reservation
+     */
+    private function createReservation(Resource $resource, string $reservedAt, int $duration, string $status = null)
     {
         $data = [
             'resource_id' => $resource->id,
